@@ -20,10 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'yhm2g1iv5!()r*vj308-qq+g*ne@l-=66aqgz2q&3lzeuxgw-5'
+#SECRET_KEY = 'yhm2g1iv5!()r*vj308-qq+g*ne@l-=66aqgz2q&3lzeuxgw-5'
+SECRET_KEY = os.environ.get('SECRET_KEY',"yhm2g1iv5!()r*vj308-qq+g*ne@l-=66aqgz2q&3lzeuxgw-5") 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG',True) 
 
 ALLOWED_HOSTS = []
 
@@ -133,3 +135,4 @@ CHANNEL_LAYERS = {
  "ROUTING": "chat.routing.channel_routing",
  },
 }
+
