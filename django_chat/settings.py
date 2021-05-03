@@ -145,6 +145,7 @@ CHANNEL_LAYERS = {
     "default": {
         #"BACKEND": "asgiref.inmemory.ChannelLayer",
         "BACKEND": "asgi_redis.RedisChannelLayer",
+        #"BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [os.getenv('REDISTOGO_URL', 'redis://localhost:6379'),],
         },
