@@ -1,0 +1,7 @@
+./serversettings.py
+.env
+#*/migrations/*
+/media/*
+*.pyc
+*.pyc
+*.pyo

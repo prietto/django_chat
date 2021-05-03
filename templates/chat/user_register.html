@@ -1,0 +1,62 @@
+{% extends 'chat/index.html' %}
+{% block form %}
+    <div class="row col-md-6 offset-md-3 col-sm-12">
+        <div>
+            <h3>
+            Registro de Usuario
+            </h3>
+        </div>
+        <br>
+    
+        <form id="register-form" class="form-group" method="POST">
+            <small class="text-danger">
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    {{ error|escape }}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    
+                        {% if form.non_field_errors%}
+                            {% for error in form.non_field_errors %}
+                                {{ error|escape }}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                </small>
+        {% csrf_token %}
+            <div class="row">
+                <div class="input-field col s12">
+                    <label for="id_username" data-error="Username already taken">Usuario</label>
+                    {{ form.username }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                        <label for="id_password">Password</label>
+                    {{ form.password1 }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <label for="id_password2">Repeat Password</label>
+                    {{ form.password2 }}
+                    
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12 text-right">
+                    <div class="d-inline-block">
+                        <button class="btn btn-info "><a href="{% url 'index' %}">Atras</a></button>
+                    </div>
+                    <div class="d-inline-block">
+                        <button class="btn btn-info ">Enviar</button>
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+{% endblock %}
