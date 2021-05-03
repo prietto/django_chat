@@ -57,12 +57,12 @@
                                         <button ng-click="delete_msg(msg.id)" ><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                     </div>                                    
                                     <img style="max-width:400px" src="[[msg.message]]" />
-                                    <span ng-bind-html="msg.message">{{ msg.message }}</span>
+                                    <!-- <span ng-bind-html="msg.message">{{ msg.message }}</span> -->
                                 </div>
 
                                 
                                 <div ng-if="msg.sender_user != current_user" class="message other-message">                                        
-                                    <span ng-bind="msg.message">{{ msg.message }}</span>
+                                    <img style="max-width:400px" src="[[msg.message]]" />
                                 </div>
                             </li>
                         
