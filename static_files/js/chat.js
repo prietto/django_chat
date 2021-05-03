@@ -25,7 +25,8 @@ ngApp.controller('myController', function ($scope, $http) {
     var socket;
     angular.element(document).ready(function(){
         $scope.scrolltoend();
-        socket = new WebSocket('ws:' + window.location.host + '/chat/');
+        const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws',
+        socket = new WebSocket(protocol+':'+ window.location.host + '/chat/');
         socket.onopen = $scope.websocket_conn_ok;
         socket.onmessage = $scope.websocket_msg_received;
 
