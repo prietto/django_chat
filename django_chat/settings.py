@@ -137,12 +137,16 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_files')]
 # Channels
 ASGI_APPLICATION = 'routing.application'
 
+
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
+
 CHANNEL_LAYERS = {
     "default": {
         #"BACKEND": "asgiref.inmemory.ChannelLayer",
         "BACKEND": "asgi_redis.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+            "hosts": [os.getenv('REDISTOGO_URL', 'redis://localhost:6379'),],
         },
         "ROUTING": "chat.routing.channel_routing",
     },
