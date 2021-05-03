@@ -72,6 +72,7 @@
                     {% csrf_token %}
                     <div class="col-12 alert-info d-inline-block text-center">
                             <img ng-if="pre_message_img_url" style="max-width:200px" src="[[pre_message_img_url]]" />
+                            <span ng-if="loading_img">... Cargando Imagen ...</span>
                             <div class="mb-3 image-upload">
                                 <label for="fileUploadInmueble" class="customFileUpload2">
                                     <i class="fa fa-plus-square fa-3x" aria-hidden="true"></i>
@@ -86,7 +87,7 @@
                                 <input id="id_message" autocomplete="off" name="message" ng-model="message" type="hidden" >
 
                                 <div class="input-group-append float-right d-inline-block">
-                                    <button class="btn btn-info"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                                    <button ng-disabled="loading_img || !message" class="btn btn-info"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                                 </div>
                             </div>
                         

@@ -56,6 +56,7 @@ ngApp.controller('myController', function ($scope, $http) {
         
         //$scope.formData.imagenes[imagen_index].valor = imagen.value;
         $scope.pre_message_img_url = '';
+        $scope.loading_img = true;
         var url = '/upload_img/';
         let ERROR = 'Ocurrió un error durante el guardado de la imagen';
         var imagenformData = new FormData();
@@ -79,7 +80,7 @@ ngApp.controller('myController', function ($scope, $http) {
                         "valor": "",
                     }
                     $scope.pre_message_img_url = response.data.url;
-                    $scope.message = response.data.url;
+                    $scope.message = response.data.url;                   
 
                     //$scope.selectedIndex = imagen_index;
                     //$scope.formData.imagenes[imagen_index].ruta = response.data.url;
@@ -90,9 +91,11 @@ ngApp.controller('myController', function ($scope, $http) {
             } catch (error) {
                 console.log(ERROR);
             }
+            $scope.loading_img = false;
         }, function errorCallback(response) {
             console.log('error=> ',ERROR);
             console.log(ERROR);
+            $scope.loading_img = false;
         });
 
         $scope.$apply();
