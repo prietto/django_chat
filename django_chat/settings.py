@@ -53,7 +53,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'django_chat.urls'
 
@@ -137,3 +140,11 @@ CHANNEL_LAYERS = {
  },
 }
 
+
+if os.environ.get('HEROKU', None):    
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUDNAME', None),
+        'API_KEY': os.environ.get('CLOUDINARY_API_KEY', None),
+        'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', None),
+    }
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
