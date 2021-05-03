@@ -138,10 +138,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static_files')]
 ASGI_APPLICATION = 'routing.application'
 
 CHANNEL_LAYERS = {
- "default": {
- "BACKEND": "asgiref.inmemory.ChannelLayer",
- "ROUTING": "chat.routing.channel_routing",
- },
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        #"BACKEND": "asgi_redis.RedisChannelLayer",
+        "ROUTING": "chat.routing.channel_routing",
+    },
 }
 
 
