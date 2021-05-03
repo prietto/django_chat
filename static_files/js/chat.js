@@ -1,4 +1,6 @@
-var ngApp = angular.module('myNgApp', []);
+var ngApp = angular.module('myNgApp', []).config(function($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[').endSymbol(']]');
+});;
 ngApp.controller('myController', function ($scope, $http) {
     $scope.messages = [];
     $scope.current_user = '';
@@ -20,12 +22,89 @@ ngApp.controller('myController', function ($scope, $http) {
     }
 
 
+    $scope.add = function() {
+        var f = document.getElementById('file').files[0],
+            r = new FileReader();
+    
+        r.onloadend = function(e) {
+          var data = e.target.result;
+          console.log('data=> ',data);
+          //send your binary data via $http or $resource or do anything else with it
+        }
+    
+        r.readAsBinaryString(f);
+    }
+
+
+
+    $scope.showPreviewImg = (element) => {
+        let reader = new FileReader();
+        let file = element.files[0];
+        reader.readAsDataURL(file);
+
+        reader.onloadend = function (e) {
+            // const formData = new FormData();
+            // formData.append('file', file);
+            // formData.append('generateAttach', true);
+            $scope.carga_imagen(file);
+        }
+        
+    }
+
+
+    $scope.carga_imagen = function (imagen) {
+        
+        //$scope.formData.imagenes[imagen_index].valor = imagen.value;
+        $scope.pre_message_img_url = '';
+        var url = '/upload_img/';
+        let ERROR = 'Ocurrió un error durante el guardado de la imagen';
+        var imagenformData = new FormData();
+        imagenformData.append('imagen', imagen);
+        $http({
+            method: 'POST',
+            data: imagenformData,
+            url: url,
+            headers: { 'Content-Type': undefined, "X-CSRFToken": $scope.getCookie('csrftoken'), }
+            
+        }).then(function successCallback(response) {
+            console.log('response!=> ',response);
+            try {
+                if (response.data.status === true ) {
+                    console.log(response.data.mensaje);
+
+                    const newImg = {
+                        "nombre": "",
+                        "ruta": response.data.url,
+                        "bloquear_nombre" : false,
+                        "valor": "",
+                    }
+                    $scope.pre_message_img_url = response.data.url;
+                    $scope.message = response.data.url;
+
+                    //$scope.selectedIndex = imagen_index;
+                    //$scope.formData.imagenes[imagen_index].ruta = response.data.url;
+                } else {
+                    console.log(ERROR);
+                    
+                }
+            } catch (error) {
+                console.log(ERROR);
+            }
+        }, function errorCallback(response) {
+            console.log('error=> ',ERROR);
+            console.log(ERROR);
+        });
+
+        $scope.$apply();
+    };
+
+
 
 
     var socket;
     angular.element(document).ready(function(){
         $scope.scrolltoend();
-        const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws',
+        const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
         socket = new WebSocket(protocol+':'+ window.location.host + '/chat/');
         socket.onopen = $scope.websocket_conn_ok;
         socket.onmessage = $scope.websocket_msg_received;
@@ -41,6 +120,7 @@ ngApp.controller('myController', function ($scope, $http) {
             }
             socket.send(JSON.stringify(datos));
             $scope.message = ''
+            $scope.pre_message_img_url = '';
             $scope.$apply();
             return false;
         })
@@ -56,8 +136,7 @@ ngApp.controller('myController', function ($scope, $http) {
             username: $scope.current_user,
             action: 'delete'
         }
-        socket.send(JSON.stringify(datos));
-        
+        socket.send(JSON.stringify(datos));        
     }
 
     $scope.scrolltoend = () => {
@@ -132,6 +211,7 @@ ngApp.controller('myController', function ($scope, $http) {
                 "creation_date": datos.creation_date
             }
             
+            //new_msg['message'] ="<img src='"+datos.message+"' />"
             $scope.messages.push(new_msg);
             $scope.$apply();
             $scope.scrolltoend();

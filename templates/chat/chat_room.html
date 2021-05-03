@@ -36,7 +36,7 @@
                 <div id="board" class="container chat-history" style="height: 68vh; padding: 5px; overflow-y: scroll">
                     <ul class="m-b-0">
                             <li class="clearfix" ng-repeat="msg in messages" >
-                                ID: <span ng-bind="msg.id"></span>    
+                                <!-- ID: <span ng-bind="msg.id"></span>     -->
                                 <div ng-if="msg.sender_user == current_user" class="message-data text-right"> 
                                     <span ng-bind="msg.creation_date" class="message-data-time">{{msg.creation_date }}</span> | 
                                     <span ng-bind="msg.sender_user">{{message.sender_user}}</span>
@@ -56,12 +56,13 @@
                                     <div ng-if="msg.sender_user == current_user">
                                         <button ng-click="delete_msg(msg.id)" ><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                     </div>                                    
-                                    <span ng-bind="msg.message">{{ message.message }}</span>
+                                    <img style="max-width:400px" src="[[msg.message]]" />
+                                    <span ng-bind-html="msg.message">{{ msg.message }}</span>
                                 </div>
 
                                 
                                 <div ng-if="msg.sender_user != current_user" class="message other-message">                                        
-                                    <span ng-bind="msg.message">{{ message.message }}</span>
+                                    <span ng-bind="msg.message">{{ msg.message }}</span>
                                 </div>
                             </li>
                         
@@ -69,11 +70,22 @@
                 </div>
                 <form id="chat-box" action="" class="form-group {% block hide %}hide{% endblock %}" method="post">
                     {% csrf_token %}
-                    <div class="col-12">
-                        
-                            <div class="input-group mb-3">
-                                <input id="id_message" autocomplete="off" class="form-control" name="message" ng-model="message" type="text" placeholder="Escribe...">
-                                <div class="input-group-append">
+                    <div class="col-12 alert-info d-inline-block text-center">
+                            <img ng-if="pre_message_img_url" style="max-width:200px" src="[[pre_message_img_url]]" />
+                            <div class="mb-3 image-upload">
+                                <label for="fileUploadInmueble" class="customFileUpload2">
+                                    <i class="fa fa-plus-square fa-3x" aria-hidden="true"></i>
+                                    <div>Agregar</div>
+                                </label>
+                                
+                                <input name="fileUploadInmueble" onchange="angular.element(this).scope().showPreviewImg(this)" id="fileUploadInmueble" type="file"  />
+
+                                <!-- <input type="file" id="file" name="file"/>
+                                <button ng-click="add()">Agregar</button> -->
+
+                                <input id="id_message" autocomplete="off" name="message" ng-model="message" type="hidden" >
+
+                                <div class="input-group-append float-right d-inline-block">
                                     <button class="btn btn-info"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                                 </div>
                             </div>
